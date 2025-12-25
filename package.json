@@ -2,6 +2,7 @@
   "name": "roompact-csv-to-ics",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "papaparse": "^5.4.1",
     "ics": "^2.41.0"

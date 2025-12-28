@@ -1,5 +1,5 @@
 # raat
-Resident-Assistant Assistant Tool for UC Berkeley Residential Life
+Resident-Assistant Assistant/Administrative Tool for UC Berkeley Residential Life
 
 Made to easily convert Roompact schedules into .ics files for easy import into third-party Calendar applications. 
 

@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "RA Duty Schedule Calendar",
+  "description": "Convert Roompact duty schedule CSV exports into calendar (.ics) files for Google Calendar.",
+  "version": "1.0",
+
+  "action": {
+    "default_popup": "popup.html"
+  },
+
+  "permissions": [
+    "downloads"
+  ],
+
+  "host_permissions": []
+}

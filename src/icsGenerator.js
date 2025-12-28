@@ -1,3 +1,5 @@
+//create .ics file from parsed CSV data in parseCSV.js
+
 import { createEvents } from "ics";
 import { parseDateTime } from "./parseCSV.js";
 

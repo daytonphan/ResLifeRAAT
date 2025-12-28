@@ -1,3 +1,5 @@
+//parse CSV given from Roompact duty schedule export
+
 import Papa from "papaparse";
 
 function parseCSV(csvText) {

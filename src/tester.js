@@ -1,3 +1,5 @@
+//this file is for testing the csvParse and icsGenerator modules locally using src/testdata/sample.csv
+
 import fs from "fs";
 import { parseCSV } from "./parseCSV.js";
 import { generateICS } from "./icsGenerator.js";

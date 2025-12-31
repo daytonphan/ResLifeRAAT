@@ -7,6 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	if (!convertBtn || !fileInput) return;
 
+	// hide convert button until a file is selected
+	try { convertBtn.style.display = 'none'; } catch (e) {}
+
+	fileInput.addEventListener('change', () => {
+		const hasFile = fileInput.files && fileInput.files.length > 0;
+		convertBtn.style.display = hasFile ? '' : 'none';
+	});
+
 	convertBtn.addEventListener('click', async () => {
 		const file = fileInput.files && fileInput.files[0];
 		if (!file) {

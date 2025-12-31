@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "RAAT",
-  "description": "Convert Roompact duty schedule CSV exports into calendar (.ics) files for Calendar platforms.",
+  "name": "UC Berkeley ResLife RAAT",
+  "description": "The first installment of Resident-Assistant Assistant Tool. Convert Roompact duty schedule CSV exports into calendar (.ics) files for Calendar platforms.",
   "version": "1.0",
 
   "action": {

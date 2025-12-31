@@ -5,7 +5,10 @@
   --accent:#0ea5a4;
   --accent-strong:#0b9a95;
 }
+*, *::before, *::after { box-sizing: border-box; }
 html,body{height:100%;}
+/* prefer a sensible popup width; browser may still clamp smaller */
+html, body { width: 360px; max-width: 100%; }
 body{
   margin:0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
@@ -14,10 +17,11 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 .container{
-  max-width:380px;
-  margin:16px auto;
+  width:360px;
+  max-width:100%;
+  margin:12px auto;
   background:var(--panel);
-  padding:16px;
+  padding:12px;
   border-radius:10px;
   box-shadow:0 6px 18px rgba(15,23,42,0.08);
 }

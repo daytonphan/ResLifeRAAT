@@ -6,7 +6,7 @@
   --accent-strong:#0b9a95;
 }
 *, *::before, *::after { box-sizing: border-box; }
-html,body{height:100%;}
+html,body{height:auto;}
 /* prefer a sensible popup width; browser may still clamp smaller */
 html, body { width: 360px; max-width: 100%; }
 body{
@@ -15,15 +15,16 @@ body{
   background:var(--bg);
   color:#0f172a;
   -webkit-font-smoothing:antialiased;
+  background-color: #0072db;
 }
 .container{
   width:360px;
-  max-width:100%;
+  max-width:95%;
   margin:12px auto;
   background:var(--panel);
   padding:12px;
   border-radius:10px;
-  box-shadow:0 6px 18px rgba(15,23,42,0.08);
+  box-shadow:0 6px 18px rgba(15, 23, 42, 0.721)
 }
 h1{font-size:16px;margin:0 0 6px}
 p{margin:0 0 12px;color:var(--muted);font-size:13px}

@@ -1,102 +1,50 @@
-const fileInput = document.getElementById("csvFileInput");
+import { parseCSV } from "./parseCSV.js";
+import { generateICS, downloadICS } from "./icsGenerator.js";
 
-document.getElementById("convertButton").addEventListener("click", async () => {
-    const file = fileInput.files[0];
+document.addEventListener('DOMContentLoaded', () => {
+	const fileInput = document.getElementById('csvFileInput');
+	const convertBtn = document.getElementById('convertButton');
 
-    if (!file) {
-        alert("Please choose a CSV file.")
-        return;
-    }
+	if (!convertBtn || !fileInput) return;
 
-    const rows = await parseCSV(file);
-    
-    const icsText = generateICS(rows);
+	// hide convert button until a file is selected
+	try { convertBtn.style.display = 'none'; } catch (e) {}
 
-    downloadICS(icsText)
-    
-    console.log("✅ ics file downloaded");
+	fileInput.addEventListener('change', () => {
+		const hasFile = fileInput.files && fileInput.files.length > 0;
+		convertBtn.style.display = hasFile ? '' : 'none';
+	});
+
+	convertBtn.addEventListener('click', async () => {
+		const file = fileInput.files && fileInput.files[0];
+		if (!file) {
+			alert('Please select a CSV file first.');
+			return;
+		}
+
+		try {
+			const csvText = await file.text();
+			const rows = await parseCSV(csvText);
+			const icsText = generateICS(rows);
+			// use helper in icsGenerator to trigger download
+			if (typeof downloadICS === 'function') {
+				downloadICS(icsText);
+			} else {
+				// fallback: create blob and download
+				const blob = new Blob([icsText], { type: 'text/calendar' });
+				const url = URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = 'roompact-duty-schedule.ics';
+				document.body.appendChild(a);
+				a.click();
+				a.remove();
+				URL.revokeObjectURL(url);
+			}
+			console.log('✅ test-output.ics generated');
+		} catch (err) {
+			console.error('Error converting CSV:', err);
+			alert('Failed to convert CSV. See console for details.');
+		}
+	});
 });
-
-// helper functions from parseCSV and icsGenerator
-
-function parseCSV(csvText) {
-  return new Promise((resolve, reject) => {
-    Papa.parse(csvText, {
-      header: true,
-      skipEmptyLines: true,
-      complete: (results) => resolve(results.data),
-      error: reject
-    });
-  });
-}
-
-function parseDateTime(dateStr, timeStr) {
-  const date = new Date(`${dateStr} ${timeStr}`);
-  return [
-    date.getFullYear(),
-    date.getMonth() + 1,
-    date.getDate(),
-    date.getHours(),
-    date.getMinutes()
-  ];
-}
-
-function generateICS(rows) { // edited from icsGenerator.js, does not use ics library
-  // Helper to format date/time for ICS: YYYYMMDDTHHMMSS
-  function formatDateTime(dateStr, timeStr) {
-    const [year, month, day] = dateStr.split("-");
-    const [hour, minute] = timeStr.split(":");
-    return `${year}${month}${day}T${hour}${minute}00`;
-  }
-
-  function getUID(index) {
-    return `${Date.now()}-${index}@raat`;
-  }
-
-  let icsContent =
-    "BEGIN:VCALENDAR\r\n" +
-    "VERSION:2.0\r\n" +
-    "CALSCALE:GREGORIAN\r\n" +
-    "PRODID:-//UC Berkeley RAAT//EN\r\n";
-
-  rows.forEach((row, index) => {
-    const start = formatDateTime(row["Start Date"], row["Start Time"]);
-    const end = formatDateTime(row["End Date"], row["End Time"]);
-
-    const description = `
-RA on Duty
-${row["First Name"]} ${row["Last Name"]}
-${row["Email"]}
-Hours: ${row["Hours"]}
-    `.trim().replace(/\n/g, "\\n"); // escape newlines for ICS
-
-    icsContent +=
-      "BEGIN:VEVENT\r\n" +
-      `UID:${getUID(index)}\r\n` +
-      `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").split(".")[0]}Z\r\n` +
-      `DTSTART:${start}\r\n` +
-      `DTEND:${end}\r\n` +
-      `SUMMARY:RA Duty – ${row["Shift Region"]}\r\n` +
-      `LOCATION:${row["Shift Region"]}\r\n` +
-      `DESCRIPTION:${description}\r\n` +
-      "END:VEVENT\r\n";
-  });
-
-  icsContent += "END:VCALENDAR";
-
-  return icsContent;
-}
-
-function downloadICS(content) {
-  const blob = new Blob([content], { type: "text/calendar;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "schedule.ics";
-  document.body.appendChild(a);
-  a.click();
-
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}

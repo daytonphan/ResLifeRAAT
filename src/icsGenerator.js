@@ -15,7 +15,7 @@ SUMMARY:RA Duty – ${row["Shift Region"]}
 DTSTART:${start}
 DTEND:${end}
 LOCATION:${row["Shift Region"]}
-DESCRIPTION:You are the RA on Duty tonight. Better pick up the phone on time...\\n${row["First Name"]} ${row["Last Name"]}\\n${row["Email"]}\\nHours: ${row["Hours"]}
+DESCRIPTION:You are the RA on Duty for ${row["Shift Region"]}\\n${row["First Name"]} ${row["Last Name"]}\\n${row["Email"]}\\nHours: ${row["Hours"]}
 END:VEVENT
 `;
   });
